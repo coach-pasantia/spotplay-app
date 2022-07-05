@@ -1,0 +1,88 @@
+openapi: 3.0.0
+info:
+  title: Spotplay
+  description: 'Es una plataforma de musica y mas ...'
+  contact:
+    email: suport@spotplay.com
+  license:
+    name: Apache 2.0
+    url: http://apac.....
+  version: 1.0.0
+servers:
+- url: http://localhost:4000/api/v1
+tags:
+- name: Song
+  description: canciones de la aplicacion
+- name: User
+  description: usuarios de la plataforma
+- name: Playlist
+  description: playlist de usuarios
+components:
+  schemas:
+    Song:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+        uri:
+          type: string
+        duration:
+          type: string
+        imagen: 
+          type: string
+        idAlbum:
+          type: integer
+          format: int64
+        idArtist:
+          type: integer
+          format: int32
+        idGenre:
+          type: integer
+          format: int32
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+paths:
+  /user/singup:
+    post:
+      tags:
+      - User
+      summary: crear un usuario
+      operantionId: createUser
+      description: Se creara un usuario para  utilizarlo en la apliacion.
+      requestBody:
+        description: ingrese los datos del usuario a crear.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        200:
+          description: registro exitoso!
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        400:
+          description: bad request
+          content: {}
+        404:
+          description: not found
+          content: {}
+    x-codegen-request-body-name: body

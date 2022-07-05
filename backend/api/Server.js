@@ -1,6 +1,12 @@
 import express from 'express'
 import cors from 'cors'
 import morgan from 'morgan'
+import swaggerUI from 'swagger-ui-express'
+import YAML from 'yamljs'
+
+// configuracion de paths
+import { fileURLToPath } from 'url'
+import { dirname, join } from 'path'
 // importacion de modulos
 import { userModule } from './user/index.js'
 import { songMudule } from './song/index.js'
@@ -13,6 +19,8 @@ class Server {
     this._port = config.port // almacena el puerto del servidor
     this._hostname = config.hostname // almacena el hostname del servidor
     this._name = config.name // almacena el nombre del servidor
+    this._dirname = dirname(fileURLToPath(import.meta.url)) // almacena el directorio del servidor
+    this._swaggerFile = YAML.load(join(dirname(fileURLToPath(import.meta.url)), '../docs/swagger.yaml')) // almacena el archivo swagger
     this.setMiddlewares()
     this.setRoutes()
   }
@@ -28,6 +36,7 @@ class Server {
     this._app.use('/api/v1/song', songMudule())
     this._app.use('/api/v1/user', userModule(express.Router))
     this._app.use('/api/v1/auth', authModule(express.Router))
+    this._app.use('/api/v1/docs', swaggerUI.serve, swaggerUI.setup(this._swaggerFile))
   }
 
   // este metodo inicia el servidor
