@@ -50,7 +50,20 @@ export class DataJson {
     const items = this.readJsonFile()
     return items[table] || []
   }
+
+  findByAtribute (table, atribute, value) {
+    const items = this.readJsonFile()
+    const item = items[table].find(item => item[atribute] === value)
+    if (item) {
+      return item
+    }
+    return null
+  }
 }
+
+// const test = new DataJson()
+// const result = test.findByAtribute('song', '_title', 'song')
+// console.table(result)
 
 // const data = new DataJson()
 // data.save('user', { id: null, name: 'Juan', lastName: 'perez' })
