@@ -11,9 +11,9 @@ export default class AuthRoute {
     this._router.post('/singin', this.handleSingin.bind(this))
   }
 
-  handleSingin (req, res) {
+  async handleSingin (req, res) {
     try {
-      const result = this._controller.authenticationUser(req.body)
+      const result = await this._controller.authenticationUser(req.body)
       if (result._auth) {
         this._response.success(req, res, result, this._httpCode.OK)
       } else {

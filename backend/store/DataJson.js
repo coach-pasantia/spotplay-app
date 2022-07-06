@@ -59,6 +59,23 @@ export class DataJson {
     }
     return null
   }
+
+  update (table, data) {
+    const items = this.readJsonFile()
+    const newItems = items[table].filter(item => item._id !== data._id)
+    newItems.push(data)
+    items[table] = newItems
+    this.writeJsonFile(items)
+    return data
+  }
+
+  delete (table, data) {
+    const items = this.readJsonFile()
+    const itemDelete = items[table].find(item => item._id === data)
+    itemDelete._status = 0
+    this.writeJsonFile(items)
+    return 'Delete item'
+  }
 }
 
 // const test = new DataJson()
