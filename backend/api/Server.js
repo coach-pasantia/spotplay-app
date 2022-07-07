@@ -33,6 +33,9 @@ class Server {
   }
 
   setRoutes () {
+    this._app.use('/', (req, res) => {
+      res.send('Hello World')
+    })
     this._app.use('/api/v1/song', songMudule())
     this._app.use('/api/v1/user', userModule(express.Router))
     this._app.use('/api/v1/auth', authModule(express.Router))
