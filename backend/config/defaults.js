@@ -3,7 +3,7 @@ dotenv.config()
 
 export const config = {
   api: {
-    port: process.env.PORT || 8000,
+    port: process.env.API_PORT || 3000,
     hostname: process.env.HOSTNAME || 'localhost',
     name: process.env.NAMEAPP || 'app'
   },
