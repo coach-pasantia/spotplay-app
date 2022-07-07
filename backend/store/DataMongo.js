@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 import { config } from '../config/defaults.js'
 import { models } from './Schemas.js'
 
-class DataMongo {
+export class DataMongo {
   constructor () {
     this.setConnection()
     this._models = models
@@ -15,7 +15,6 @@ class DataMongo {
         useUnifiedTopology: true
       })
       console.log(`MongoDB connected: ${db.connection.host}`)
-      return db
     } catch (error) {
       console.log(error)
     }
@@ -134,10 +133,23 @@ class DataMongo {
       return 'no item of Songs'
     }
   }
+
+  async getByQuery (model, query) {
+    try {
+      const getByQuery = await this._models[model].find(query).populate('_idArtist').populate('_idAlbum')
+      if (getByQuery.length > 0) {
+        return getByQuery
+      }
+      return 'no item of Songs'
+    } catch (error) {
+      console.log(error)
+      return 'no item of Songs'
+    }
+  }
 }
 
-const test = new DataMongo()
-test.searchSongString('test1').then(res => console.log(res), err => console.log(err))
+// const test = new DataMongo()
+// test.searchSongString('test1').then(res => console.log(res), err => console.log(err))
 // test.searchSong('song3', 'test1').then(res => console.log(res), err => console.log(err))
 // test.save('Songs', { _title: 'song3', _artist: 'test1', _album: 'test' }).then(res => console.log(res), error => console.log(error))
 // test.delete('Songs', '62c718c7cdfcd499ed668b46').then(res => console.log(res), error => console.log(error))

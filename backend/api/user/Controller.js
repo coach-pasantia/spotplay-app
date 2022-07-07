@@ -1,39 +1,21 @@
-// los controller se encargar de realizar la logica del negocio
-
 class UserController {
-  constructor (serviceUser, user, hashPassword) {
+  constructor (serviceUser, user, hashPassword, table) {
     this._service = serviceUser
     this._entity = user
     this._hashPassword = hashPassword
+    this._table = table
   }
 
-  createNewUser (user) {
-    console.log(user)
-    if (user.username && user.email && user.password) {
+  async createNewUser (user) {
+    try {
       const newUser = new this._entity(user)
-      console.log(newUser)
       newUser.encryptPassword(user.password, this._hashPassword)
-      console.log(newUser)
-      const response = this._service.save('users', newUser)
+      const response = await this._service.save(this._table.user, newUser)
       return response
-    } else {
-      throw new Error('Missing parameters')
+    } catch (error) {
+      console.log(error)
+      return new Error('create new user failed')
     }
-  }
-
-  async getAllSong () {
-    const response = await this._service.all('song')
-    return response
-  }
-
-  updateSong (song) {
-    console.log(song)
-    return 'updated a song'
-  }
-
-  deleteSong (id) {
-    console.log(id)
-    return 'deleted a song'
   }
 }
 

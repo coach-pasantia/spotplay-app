@@ -8,38 +8,73 @@ class SongRouter {
   }
 
   registerRoutes () {
-    this._router.get('/', this.handleGetSong.bind(this))
     this._router.post('/', this.handlePostSong.bind(this))
-    this._router.delete('/', this.handleDeleteSong.bind(this))
-    this._router.put('/', this.handlePutSong.bind(this))
+    this._router.get('/', this.handleGetSong.bind(this))
+    this._router.delete('/:id', this.handleDeleteSong.bind(this))
+    this._router.put('/:id', this.handlePutSong.bind(this))
+    // artist
+    this._router.post('/artist', this.handlePostArtist.bind(this))
+    // album
+    this._router.post('/album', this.handlePostAlbum.bind(this))
   }
 
-  handleGetSong (req, res) {
+  async handlePostSong (req, res) {
     try {
-      const result = this._ctrl.getAllSong()
-      this._response.success(req, res, result, this._httpCode.ok)
-      if (result.length === 0) {
-        this._response.success(req, res, 'No hay canciones', this._httpCode.not_found)
+      const result = await this._ctrl.createNewSong(req.body)
+      this._response.success(req, res, result, this._httpCode.CREATED)
+    } catch (error) {
+      this._response.error(req, res, error, this._httpCode.BAD_REQUEST)
+    }
+  }
+
+  async handleGetSong (req, res) {
+    try {
+      if (Object.keys(req.query).length > 0) {
+        const result = await this._ctrl.getSongByQuery(req.query)
+        this._response.success(req, res, result, this._httpCode.ok)
+      } else {
+        const result = await this._ctrl.getAllSongs()
+        this._response.success(req, res, result, this._httpCode.ok)
       }
     } catch (error) {
       this._response.error(req, res, error, this._httpCode.internal_server_error)
     }
   }
 
-  handlePostSong (req, res) {
-    const song = req.body
-    const result = this._ctrl.createNewSong(song)
-    this._response.success(req, res, result, 201)
+  async handleDeleteSong (req, res) {
+    try {
+      const result = await this._ctrl.deleteSong(req.params.id)
+      this._response.success(req, res, result, this._httpCode.ok)
+    } catch (error) {
+      this._response.error(req, res, error, this._httpCode.internal_server_error)
+    }
   }
 
-  handleDeleteSong (req, res) {
-    console.log(req)
-    res.send('soy el manejador de la ruta delet/song')
+  async handlePutSong (req, res) {
+    try {
+      const result = await this._ctrl.updateSong(req.paramas.id, req.body)
+      this._response.success(req, res, result, this._httpCode.ok)
+    } catch (error) {
+      this._response.error(req, res, error, this._httpCode.internal_server_error)
+    }
   }
 
-  handlePutSong (req, res) {
-    console.log(req)
-    res.send('soy el manejador de la ruta put/song')
+  async handlePostArtist (req, res) {
+    try {
+      const result = await this._ctrl.createNewArtist(req.body)
+      this._response.success(req, res, result, this._httpCode.CREATED)
+    } catch (error) {
+      this._response.error(req, res, error, this._httpCode.BAD_REQUEST)
+    }
+  }
+
+  async handlePostAlbum (req, res) {
+    try {
+      const result = await this._ctrl.createNewAlbum(req.body)
+      this._response.success(req, res, result, this._httpCode.CREATED)
+    } catch (error) {
+      this._response.error(req, res, error, this._httpCode.BAD_REQUEST)
+    }
   }
 }
 
