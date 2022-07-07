@@ -12,5 +12,8 @@ export const config = {
   },
   jwt: {
     secret: process.env.JWT_SECRET || 'secret'
+  },
+  mongo: {
+    uri: process.env.MONGO_URI
   }
 }

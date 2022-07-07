@@ -21,8 +21,8 @@ class UserController {
     }
   }
 
-  getAllSong () {
-    const response = this._service.all('song')
+  async getAllSong () {
+    const response = await this._service.all('song')
     return response
   }
 

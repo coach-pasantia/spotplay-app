@@ -6,3 +6,5 @@ CREATE TABLE users (
   created_at timestamp NOT NULL DEFAULT now(),
   updated_at timestamp NOT NULL DEFAULT now()
 );
+
+delete from users;

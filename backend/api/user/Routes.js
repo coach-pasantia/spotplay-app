@@ -14,8 +14,8 @@ export default class UserRouter {
     // this._router.put('/', this.handlePutSong.bind(this))
   }
 
-  handleSingUp (req, res) {
-    const result = this._ctrl.createNewUser(req.body)
+  async handleSingUp (req, res) {
+    const result = await this._ctrl.createNewUser(req.body)
     if (result instanceof Error) {
       this._response.error(req, res, result, 201)
     }
