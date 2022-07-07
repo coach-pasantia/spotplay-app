@@ -1,12 +1,5 @@
 {
   "version": 2,
-  "env": {
-      "API_PORT": 80,
-      "HOSTNAME":"localhost",
-      "NAMEAPP":"spotplay",
-      "JWT_SECRET":"secret!",
-      "MONGO_URI":"mongodb+srv://spotplayuser:Password123@cluster-spotplay.fkt73.mongodb.net/spotplay?retryWrites=true&w=majority"
-  },
   "builds": [
       {
           "src": "backend/api/index.js",
